@@ -2,6 +2,7 @@ package com.example.pokedex.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,11 +43,20 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     }
     @Override
     public boolean onQueryTextSubmit(String query) {
-        pokemons = new ArrayList<>();
+        ArrayList<Pokemon> newList = new ArrayList<>();
+        for (int i = 0; i < pokemons.size(); i++) {
+            if (pokemons.get(i).getNom().contains(query)) newList.add(pokemons.get(i));
+        }
+        pokemons.clear();
+        pokemons = newList;
+        adapter.setPokemons(pokemons);
+        adapter.notifyDataSetChanged();
+        Log.println(Log.INFO, null, String.valueOf(pokemons));
         return false;
     }
     @Override
-    public boolean onQueryTextChange(String newText) {
+    public boolean onQueryTextChange(@NonNull String newText) {
+        if (newText.isEmpty()) ApiServices.getAllPokemon(getContext(), this);
         return false;
     }
     @Override
