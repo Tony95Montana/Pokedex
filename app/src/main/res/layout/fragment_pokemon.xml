@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
     <TextView
         android:textAlignment="center"
         android:id="@+id/textViewTitle"
@@ -56,11 +56,83 @@
                 tools:ignore="HardcodedText" />
         </LinearLayout>
         <TextView
-            android:id="@+id/textViewPoids"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:textSize="24sp"
-            android:text="Poids : 0 Kg"
-            tools:ignore="HardcodedText"/>
+            android:text="@string/title_talent"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewTalent1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:layout_weight="50"
+                android:text="Talent 1"
+                tools:ignore="HardcodedText"/>
+            <TextView
+                android:id="@+id/textViewTalent2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:layout_weight="50"
+                android:text="Talent 2"
+                tools:ignore="HardcodedText"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewDescription1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textStyle="italic"
+                android:gravity="center"
+                android:layout_weight="50"
+                android:text="Description 1"
+                tools:ignore="HardcodedText"/>
+            <TextView
+                android:id="@+id/textViewDescription2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textStyle="italic"
+                android:gravity="center"
+                android:layout_weight="50"
+                android:text="Description 2"
+                tools:ignore="HardcodedText"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewTaille"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="50"
+                android:textSize="24sp"
+                android:text="Taille : 0 m"
+                tools:ignore="HardcodedText"/>
+            <TextView
+                android:id="@+id/textViewPoids"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="50"
+                android:textSize="24sp"
+                android:text="Poids : 0 Kg"
+                tools:ignore="HardcodedText"/>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

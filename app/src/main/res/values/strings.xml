@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Pokedex</string>
     <string name="titre_type">Type :</string>
+    <string name="title_talent">Talent :</string>
 </resources>
