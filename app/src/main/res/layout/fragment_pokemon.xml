@@ -21,6 +21,8 @@
         android:layout_gravity="center"
         android:paddingVertical="3dp"
         android:src="@mipmap/no_pokemon"
+        android:clickable="true"
+        android:focusable="true"
         android:contentDescription="image du pokémon"
         tools:ignore="HardcodedText" />
     <LinearLayout
@@ -58,7 +60,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginVertical="10dp"
             android:textSize="24sp"
             android:text="@string/title_talent"/>
         <LinearLayout
@@ -69,7 +71,7 @@
                 android:id="@+id/textViewTalent1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 android:textStyle="bold"
                 android:textSize="24sp"
                 android:layout_weight="50"
@@ -79,7 +81,7 @@
                 android:id="@+id/textViewTalent2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center"
+                android:gravity="center_horizontal"
                 android:textStyle="bold"
                 android:textSize="24sp"
                 android:layout_weight="50"

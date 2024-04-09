@@ -21,6 +21,7 @@ import java.util.ArrayList;
 public class PokemonFragment extends Fragment {
     private ImageView imageView, imageViewTypes1, imageViewTypes2;
     private TextView textViewTitle, textViewTaille, textViewPoids, textViewTalent1, textViewTalent2, textViewDescription1, textViewDescription2;
+    private boolean shiny;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         @SuppressLint("InflateParams") View v = inflater.inflate(R.layout.fragment_pokemon, null);
@@ -35,16 +36,29 @@ public class PokemonFragment extends Fragment {
         imageViewTypes1 = v.findViewById(R.id.imageViewTypes1);
         imageViewTypes2 = v.findViewById(R.id.imageViewTypes2);
         imageView = v.findViewById(R.id.imageViewPokemon);
+        this.shiny = false;
         return v;
     }
     @SuppressLint("SetTextI18n")
     public void onSelectPokemon(@NonNull Pokemon pokemon) {
         textViewTitle.setText(Html.fromHtml(pokemon.getNom() + " (N° <strong><i>" + pokemon.getId() + "</i></strong>)", Html.FROM_HTML_MODE_COMPACT));
         ApiServices.loadPokemonAvatar(getContext(), pokemon.getAvatar(), imageView);
+        imageView.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                if (shiny) {
+                    shiny = false;
+                    ApiServices.loadPokemonAvatar(getContext(), pokemon.getAvatar(), imageView);
+                }
+                else {
+                    shiny = true;
+                    ApiServices.loadPokemonAvatar(getContext(), pokemon.getShiny(), imageView);
+                }
+            }
+        });
         ArrayList<Talent> talents = pokemon.getTalents();
         for (int i = 0; i < talents.size(); i++) {
-            if (i == 0) ApiServices.loadPokemonTalent(getContext(), talents.get(i).getLink(), textViewTalent1, textViewDescription1);
-            else ApiServices.loadPokemonTalent(getContext(), talents.get(i).getLink(), textViewTalent2, textViewDescription2);
+            if (i == 0) ApiServices.loadPokemonTalent(getContext(), talents.get(i).getLink(), textViewTalent1, textViewDescription1, talents.get(i).getHidden());
+            else ApiServices.loadPokemonTalent(getContext(), talents.get(i).getLink(), textViewTalent2, textViewDescription2, talents.get(i).getHidden());
         }
         textViewTaille.setText("Taille : "+(Double.parseDouble(pokemon.getHeight())/10)+" m");
         textViewPoids.setText("Poids : "+(Double.parseDouble(pokemon.getPoids())/10)+" Kg");

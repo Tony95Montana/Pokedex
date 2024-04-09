@@ -2,6 +2,7 @@ package com.example.pokedex.services;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.Html;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -77,7 +78,7 @@ public class ApiServices {
                 error -> imageView.setImageResource(android.R.drawable.ic_menu_gallery));
         queue.add(request);
     }
-    public static void loadPokemonTalent(Context context, String url, final TextView nom,  final TextView desc){
+    public static void loadPokemonTalent(Context context, String url, final TextView nom,  final TextView desc, boolean hidden){
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest request = new StringRequest(url, response -> {
             try {
@@ -85,7 +86,8 @@ public class ApiServices {
                 JSONArray name = jsonObject.getJSONArray("names");
                 for(int i=0; i < name.length(); i++) {
                     if (name.getJSONObject(i).getJSONObject("language").getString("name").equals("fr")) {
-                        nom.setText(name.getJSONObject(i).getString("name"));
+                        if (hidden) nom.setText(Html.fromHtml(name.getJSONObject(i).getString("name")+"<br> <small>(<i>Talent Caché</i>)</small>", Html.FROM_HTML_MODE_COMPACT));
+                        else nom.setText(name.getJSONObject(i).getString("name"));
                         break;
                     }
                 }
