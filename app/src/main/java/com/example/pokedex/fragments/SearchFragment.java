@@ -2,7 +2,6 @@ package com.example.pokedex.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +22,10 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private ListView listView;
     private PokemonAdapter adapter;
     private ArrayList<Pokemon> pokemons;
-    private ArrayList<Pokemon> cache;
+    private ArrayList<Pokemon> res;
+    private boolean research;
     private SearchObserver listener;
+    private int offset;
     public void setListener(SearchObserver listener) {
         this.listener = listener;
     }
@@ -36,31 +37,31 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         searchView.setOnQueryTextListener(this);
         listView = v.findViewById(R.id.listViewMain);
         pokemons = new ArrayList<>();
-        cache = new ArrayList<>();
+        res = new ArrayList<>();
+        research = false;
         adapter = new PokemonAdapter(pokemons, getContext());
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
-        ApiServices.getAllPokemon(getContext(), this);
+        offset = 0;
+        ApiServices.getAllPokemon(getContext(), offset, 200, this);
+        offset = 200;
         return v;
     }
     @Override
     public boolean onQueryTextSubmit(String query) {
-        ArrayList<Pokemon> newList = new ArrayList<>();
+        res.clear();
         for (int i = 0; i < pokemons.size(); i++) {
-            if (pokemons.get(i).getNom().contains(query)) newList.add(pokemons.get(i));
+            if (pokemons.get(i).getNom().contains(query)) res.add(pokemons.get(i));
         }
-        pokemons.clear();
-        pokemons = newList;
-        adapter.setPokemons(pokemons);
+        adapter.setPokemons(res);
         adapter.notifyDataSetChanged();
+        research = true;
         return false;
     }
     @Override
     public boolean onQueryTextChange(@NonNull String newText) {
         if (newText.isEmpty()) {
-            pokemons = new ArrayList<>(cache);
-            Log.println(Log.INFO, null, String.valueOf(cache.size()));
-            Log.println(Log.INFO, null, String.valueOf(pokemons.size()));
+            research = false;
             adapter.setPokemons(pokemons);
             adapter.notifyDataSetChanged();
         }
@@ -70,13 +71,13 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     public void onReceivePokemonInfo(Pokemon pokemon) {
         if(!pokemons.contains(pokemon)){
             pokemons.add(pokemon);
-            cache.add(pokemon);
             adapter.setPokemons(pokemons);
             adapter.notifyDataSetChanged();
         }
     }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        listener.onReceivePokemonInfo(pokemons.get(position));
+        if (research) listener.onReceivePokemonInfo(res.get(position));
+        else listener.onReceivePokemonInfo(pokemons.get(position));
     }
 }

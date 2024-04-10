@@ -73,6 +73,9 @@ public class PokemonFragment extends Fragment {
                 case "electric":
                     image = R.mipmap.electric;
                     break;
+                case "dark":
+                    image = R.mipmap.dark;
+                    break;
                 case "poison":
                     image = R.mipmap.poison;
                     break;

@@ -1,15 +1,12 @@
 package com.example.pokedex.services;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.text.Html;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageRequest;
-import com.android.volley.toolbox.RequestFuture;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.pokedex.models.Pokemon;
@@ -17,10 +14,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.concurrent.ExecutionException;
-
 public class ApiServices {
-    private static final String URL_API="https://pokeapi.co/api/v2/pokemon?limit=100";
+    private static final String URL_API="https://pokeapi.co/api/v2/pokemon";
     private static void getUrlPokemon(Context context, String url, SearchObserver listener){
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest requestFinal = new StringRequest(url, result -> {
@@ -39,69 +34,34 @@ public class ApiServices {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
+        }, Throwable::printStackTrace);
         queue.add(requestFinal);
     }
-    public static void getAllPokemon(Context context, SearchObserver listener) {
-        RequestFuture<String> future = RequestFuture.newFuture();
-        RequestQueue queue = Volley.newRequestQueue(context);
-        StringRequest request = new StringRequest(URL_API, response -> {
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                JSONArray results = jsonObject.getJSONArray("results");
-                for(int i=0; i<results.length(); i++) {
-                    getUrlPokemon(context, results.getJSONObject(i).getString("url"), listener);
-                }
-                boolean done = future.isDone();
-                if (!jsonObject.getString("next").isEmpty() && done) getPokemons(context, jsonObject.getString("next"), listener);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-        queue.add(request);
+    public static void getAllPokemon(Context context, int offset, int limit, SearchObserver listener) {
+        final int totalPokemon = 1302; // Nombre total de Pokémon dans l'API (vous pouvez obtenir cela dynamiquement si nécessaire)
+        if (offset < totalPokemon) {
+            RequestQueue queue = Volley.newRequestQueue(context);
+            new Thread(() -> {
+                String url = URL_API + "?offset=" + offset + "&limit=" + limit;
+                StringRequest request = new StringRequest(url, response -> {
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        JSONArray results = jsonObject.getJSONArray("results");
+                        for (int i = 0; i < results.length(); i++) {
+                            getUrlPokemon(context, results.getJSONObject(i).getString("url"), listener);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }, Throwable::printStackTrace);
+                queue.add(request);
+            }).start();
+        }
     }
-    private static void getPokemons(Context context, String url, SearchObserver listener) {
-        RequestFuture<String> future = RequestFuture.newFuture();
-        RequestQueue queue = Volley.newRequestQueue(context);
-        StringRequest request = new StringRequest(url, response -> {
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                JSONArray results = jsonObject.getJSONArray("results");
-                for(int i=0; i<results.length(); i++) {
-                    getUrlPokemon(context, results.getJSONObject(i).getString("url"), listener);
-                }
-                boolean done = future.isDone();
-                if (!jsonObject.getString("next").isEmpty() && done) getPokemons(context, jsonObject.getString("next"), listener);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-        queue.add(request);
-    }
-    public static void loadPokemonAvatar(Context context, String url, final ImageView imageView){
+    public static void loadPokemonAvatar(Context context, String url, @NonNull final ImageView imageView){
         RequestQueue queue = Volley.newRequestQueue(context);
         ImageRequest request = new ImageRequest(url,
-                new Response.Listener<Bitmap>() {
-                    @Override
-                    public void onResponse(Bitmap bitmap) {
-                        imageView.setImageBitmap(bitmap);
-                    }
-                }, 0, 0, null,
+                imageView::setImageBitmap, 0, 0, null,
                 error -> imageView.setImageResource(android.R.drawable.ic_menu_gallery));
         queue.add(request);
     }
