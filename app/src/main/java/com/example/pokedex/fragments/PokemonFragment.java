@@ -76,6 +76,15 @@ public class PokemonFragment extends Fragment {
                 case "grass":
                     image = R.mipmap.grass;
                     break;
+                case "flying":
+                    image = R.mipmap.flying;
+                    break;
+                case "bug":
+                    image = R.mipmap.bug;
+                    break;
+                case "normal":
+                    image = R.mipmap.normal;
+                    break;
             }
             if (i == 0) imageViewTypes1.setImageResource(image);
             else imageViewTypes2.setImageResource(image);
