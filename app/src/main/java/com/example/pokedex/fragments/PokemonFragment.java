@@ -70,14 +70,41 @@ public class PokemonFragment extends Fragment {
                 case "water":
                     image = R.mipmap.water;
                     break;
+                case "electric":
+                    image = R.mipmap.electric;
+                    break;
                 case "poison":
                     image = R.mipmap.poison;
+                    break;
+                case "psychic":
+                    image = R.mipmap.psychic;
                     break;
                 case "grass":
                     image = R.mipmap.grass;
                     break;
+                case "ice":
+                    image = R.mipmap.ice;
+                    break;
+                case "ghost":
+                    image = R.mipmap.ghost;
+                    break;
+                case "fighting":
+                    image = R.mipmap.fighting;
+                    break;
+                case "steel":
+                    image = R.mipmap.steel;
+                    break;
+                case "ground":
+                    image = R.mipmap.ground;
+                    break;
+                case "rock":
+                    image = R.mipmap.rock;
+                    break;
                 case "flying":
                     image = R.mipmap.flying;
+                    break;
+                case "fairy":
+                    image = R.mipmap.fairy;
                     break;
                 case "bug":
                     image = R.mipmap.bug;
