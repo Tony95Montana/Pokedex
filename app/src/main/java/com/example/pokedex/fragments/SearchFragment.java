@@ -2,7 +2,6 @@ package com.example.pokedex.fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +50,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         pokemons = newList;
         adapter.setPokemons(pokemons);
         adapter.notifyDataSetChanged();
-        Log.println(Log.INFO, null, String.valueOf(pokemons));
         return false;
     }
     @Override

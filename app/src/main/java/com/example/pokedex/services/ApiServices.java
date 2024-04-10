@@ -20,7 +20,7 @@ import org.json.JSONObject;
 
 public class ApiServices {
     private static final String URL_API="https://pokeapi.co/api/v2/pokemon?limit=20";
-    public static void getUrlPokemon(Context context, String url, SearchObserver listener){
+    private static void getUrlPokemon(Context context, String url, SearchObserver listener){
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest requestFinal = new StringRequest(url, result -> {
             try {

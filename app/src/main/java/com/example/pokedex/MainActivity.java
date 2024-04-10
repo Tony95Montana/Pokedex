@@ -1,8 +1,8 @@
 package com.example.pokedex;
 
 import android.os.Bundle;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.pokedex.fragments.PokemonFragment;
 import com.example.pokedex.fragments.SearchFragment;
 import com.example.pokedex.models.Pokemon;
@@ -28,5 +28,11 @@ public class MainActivity extends AppCompatActivity implements SearchObserver {
     public void onReceivePokemonInfo(Pokemon pokemon) {
         pokemonFragment.onSelectPokemon(pokemon);
         getSupportFragmentManager().beginTransaction().hide(searchFragment).show(pokemonFragment).commit();
+        // on click "button retour"
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            public void handleOnBackPressed() {
+                getSupportFragmentManager().beginTransaction().hide(pokemonFragment).show(searchFragment).commit();
+            }
+        });
     }
 }

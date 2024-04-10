@@ -3,10 +3,10 @@ package com.example.pokedex.fragments;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -15,10 +15,10 @@ import com.example.pokedex.R;
 import com.example.pokedex.models.Pokemon;
 import com.example.pokedex.models.Talent;
 import com.example.pokedex.services.ApiServices;
-
 import java.util.ArrayList;
 
 public class PokemonFragment extends Fragment {
+    private ImageButton imageButtonGoBack;
     private ImageView imageView, imageViewTypes1, imageViewTypes2;
     private TextView textViewTitle, textViewTaille, textViewPoids, textViewTalent1, textViewTalent2, textViewDescription1, textViewDescription2;
     private boolean shiny;
@@ -36,6 +36,7 @@ public class PokemonFragment extends Fragment {
         imageViewTypes1 = v.findViewById(R.id.imageViewTypes1);
         imageViewTypes2 = v.findViewById(R.id.imageViewTypes2);
         imageView = v.findViewById(R.id.imageViewPokemon);
+        imageButtonGoBack = v.findViewById(R.id.imageButtonGoBack);
         this.shiny = false;
         return v;
     }
@@ -43,16 +44,14 @@ public class PokemonFragment extends Fragment {
     public void onSelectPokemon(@NonNull Pokemon pokemon) {
         textViewTitle.setText(Html.fromHtml(pokemon.getNom() + " (N° <strong><i>" + pokemon.getId() + "</i></strong>)", Html.FROM_HTML_MODE_COMPACT));
         ApiServices.loadPokemonAvatar(getContext(), pokemon.getAvatar(), imageView);
-        imageView.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-                if (shiny) {
-                    shiny = false;
-                    ApiServices.loadPokemonAvatar(getContext(), pokemon.getAvatar(), imageView);
-                }
-                else {
-                    shiny = true;
-                    ApiServices.loadPokemonAvatar(getContext(), pokemon.getShiny(), imageView);
-                }
+        imageView.setOnClickListener(v -> {
+            if (shiny) {
+                shiny = false;
+                ApiServices.loadPokemonAvatar(getContext(), pokemon.getAvatar(), imageView);
+            }
+            else {
+                shiny = true;
+                ApiServices.loadPokemonAvatar(getContext(), pokemon.getShiny(), imageView);
             }
         });
         ArrayList<Talent> talents = pokemon.getTalents();
@@ -81,5 +80,8 @@ public class PokemonFragment extends Fragment {
             if (i == 0) imageViewTypes1.setImageResource(image);
             else imageViewTypes2.setImageResource(image);
         }
+        imageButtonGoBack.setOnClickListener(v -> {
+            requireActivity().getOnBackPressedDispatcher().onBackPressed();
+        });
     }
 }
