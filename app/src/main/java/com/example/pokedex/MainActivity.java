@@ -2,6 +2,7 @@ package com.example.pokedex;
 
 import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.pokedex.fragments.PokemonFragment;
 import com.example.pokedex.fragments.SearchFragment;
@@ -25,7 +26,9 @@ public class MainActivity extends AppCompatActivity implements SearchObserver {
                 .hide(pokemonFragment).commit();
     }
     @Override
-    public void onReceivePokemonInfo(Pokemon pokemon) {
+    public void onReceivePokemonInfo(Pokemon pokemon) {}
+    @Override
+    public void onReceivePokemonData(@NonNull Pokemon pokemon) {
         pokemonFragment.onSelectPokemon(pokemon);
         getSupportFragmentManager().beginTransaction().hide(searchFragment).show(pokemonFragment).commit();
         // on click "button retour"

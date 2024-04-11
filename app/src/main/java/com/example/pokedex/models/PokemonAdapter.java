@@ -46,7 +46,7 @@ public class PokemonAdapter extends BaseAdapter {
         textViewId.setText(Html.fromHtml("(N° <strong><i>"+pokemons.get(position).getId()+"</i></strong>)", Html.FROM_HTML_MODE_COMPACT));
 
         ImageView imageView = convertView.findViewById(R.id.imageViewItemPokemon);
-        ApiServices.loadPokemonAvatar(context, pokemons.get(position).getAvatar(), imageView);
+        ApiServices.loadPokemonAvatar(context, pokemons.get(position).getId(), false, imageView);
         return convertView;
     }
 }

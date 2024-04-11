@@ -15,9 +15,11 @@ import com.example.pokedex.R;
 import com.example.pokedex.models.Pokemon;
 import com.example.pokedex.models.Talent;
 import com.example.pokedex.services.ApiServices;
+import com.example.pokedex.services.SearchObserver;
+
 import java.util.ArrayList;
 
-public class PokemonFragment extends Fragment {
+public class PokemonFragment extends Fragment implements SearchObserver {
     private ImageButton imageButtonGoBack;
     private ImageView imageView, imageViewTypes1, imageViewTypes2;
     private TextView textViewTitle, textViewTaille, textViewPoids, textViewTalent1, textViewTalent2, textViewDescription1, textViewDescription2;
@@ -40,27 +42,33 @@ public class PokemonFragment extends Fragment {
         this.shiny = false;
         return v;
     }
-    @SuppressLint("SetTextI18n")
     public void onSelectPokemon(@NonNull Pokemon pokemon) {
         textViewTitle.setText(Html.fromHtml(pokemon.getNom() + " (N° <strong><i>" + pokemon.getId() + "</i></strong>)", Html.FROM_HTML_MODE_COMPACT));
-        ApiServices.loadPokemonAvatar(getContext(), pokemon.getAvatar(), imageView);
+        ApiServices.loadPokemonData(getContext(), pokemon.getId(), pokemon, this);
+        ApiServices.loadPokemonAvatar(getContext(), pokemon.getId(), false, imageView);
         imageView.setOnClickListener(v -> {
             if (shiny) {
                 shiny = false;
-                ApiServices.loadPokemonAvatar(getContext(), pokemon.getAvatar(), imageView);
-            }
-            else {
+                ApiServices.loadPokemonAvatar(getContext(), pokemon.getId(), false, imageView);
+            } else {
                 shiny = true;
-                ApiServices.loadPokemonAvatar(getContext(), pokemon.getShiny(), imageView);
+                ApiServices.loadPokemonAvatar(getContext(), pokemon.getId(), true, imageView);
             }
         });
+        imageButtonGoBack.setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
+    }
+    @Override
+    public void onReceivePokemonInfo(Pokemon pokemon) {}
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onReceivePokemonData(@NonNull Pokemon pokemon) {
+        textViewTaille.setText("Taille : "+(Double.parseDouble(pokemon.getHeight())/10)+" m");
+        textViewPoids.setText("Poids : "+(Double.parseDouble(pokemon.getPoids())/10)+" Kg");
         ArrayList<Talent> talents = pokemon.getTalents();
         for (int i = 0; i < talents.size(); i++) {
             if (i == 0) ApiServices.loadPokemonTalent(getContext(), talents.get(i).getLink(), textViewTalent1, textViewDescription1, talents.get(i).getHidden());
             else ApiServices.loadPokemonTalent(getContext(), talents.get(i).getLink(), textViewTalent2, textViewDescription2, talents.get(i).getHidden());
         }
-        textViewTaille.setText("Taille : "+(Double.parseDouble(pokemon.getHeight())/10)+" m");
-        textViewPoids.setText("Poids : "+(Double.parseDouble(pokemon.getPoids())/10)+" Kg");
         for (int i = 0; i < pokemon.getTypes().size(); i++) {
             int image = 0;
             switch (pokemon.getTypes().get(i)) {
@@ -119,8 +127,5 @@ public class PokemonFragment extends Fragment {
             if (i == 0) imageViewTypes1.setImageResource(image);
             else imageViewTypes2.setImageResource(image);
         }
-        imageButtonGoBack.setOnClickListener(v -> {
-            requireActivity().getOnBackPressedDispatcher().onBackPressed();
-        });
     }
 }

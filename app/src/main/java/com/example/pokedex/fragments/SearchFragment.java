@@ -27,7 +27,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private ArrayList<Pokemon> res;
     private boolean research;
     private SearchObserver listener;
-    private int offset;
+    private static final int OFFSET = 1302;
     private int finish;
     public void setListener(SearchObserver listener) {
         this.listener = listener;
@@ -47,9 +47,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
         progressBar.setVisibility(View.VISIBLE);
-        offset = 0;
-        ApiServices.getAllPokemon(getContext(), offset, 200, this);
-        offset = 200;
+        ApiServices.getAllPokemon(getContext(), this);
         finish = 0;
         return v;
     }
@@ -75,17 +73,19 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     }
     @Override
     public void onReceivePokemonInfo(Pokemon pokemon) {
-        if(!pokemons.contains(pokemon)){
+        if (!pokemons.contains(pokemon)) {
             finish += 1;
-            if (finish == offset) progressBar.setVisibility(View.INVISIBLE);
+            if (finish == OFFSET) progressBar.setVisibility(View.INVISIBLE);
             pokemons.add(pokemon);
             adapter.setPokemons(pokemons);
             adapter.notifyDataSetChanged();
         }
     }
     @Override
+    public void onReceivePokemonData(Pokemon pokemon) {}
+    @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (research) listener.onReceivePokemonInfo(res.get(position));
-        else listener.onReceivePokemonInfo(pokemons.get(position));
+        if (research) listener.onReceivePokemonData(res.get(position));
+        else listener.onReceivePokemonData(pokemons.get(position));
     }
 }

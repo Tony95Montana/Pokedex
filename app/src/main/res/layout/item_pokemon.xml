@@ -22,7 +22,7 @@
         <TextView
             android:id="@+id/textViewNom"
             android:layout_width="match_parent"
-            android:textSize="34sp"
+            android:textSize="30sp"
             android:gravity="center_vertical"
             android:layout_height="match_parent"
             android:text="Nom"
