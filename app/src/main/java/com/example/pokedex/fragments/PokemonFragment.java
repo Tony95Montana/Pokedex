@@ -12,16 +12,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import com.example.pokedex.R;
+import com.example.pokedex.database.FavoriteRepository;
 import com.example.pokedex.models.Pokemon;
 import com.example.pokedex.models.Talent;
 import com.example.pokedex.services.ApiServices;
 import com.example.pokedex.services.SearchObserver;
-
 import java.util.ArrayList;
 
 public class PokemonFragment extends Fragment implements SearchObserver {
     private ImageButton imageButtonGoBack;
-    private ImageView imageView, imageViewTypes1, imageViewTypes2;
+    private ImageView imageView, imageViewTypes1, imageViewTypes2, imageViewEtoile;
     private TextView textViewTitle, textViewTaille, textViewPoids, textViewTalent1, textViewTalent2, textViewDescription1, textViewDescription2;
     private boolean shiny;
     @Override
@@ -38,6 +38,7 @@ public class PokemonFragment extends Fragment implements SearchObserver {
         imageViewTypes1 = v.findViewById(R.id.imageViewTypes1);
         imageViewTypes2 = v.findViewById(R.id.imageViewTypes2);
         imageView = v.findViewById(R.id.imageViewPokemon);
+        imageViewEtoile = v.findViewById(R.id.imageViewEtoile);
         imageButtonGoBack = v.findViewById(R.id.imageButtonGoBack);
         this.shiny = false;
         return v;
@@ -69,6 +70,18 @@ public class PokemonFragment extends Fragment implements SearchObserver {
             if (i == 0) ApiServices.loadPokemonTalent(getContext(), talents.get(i).getLink(), textViewTalent1, textViewDescription1, talents.get(i).getHidden());
             else ApiServices.loadPokemonTalent(getContext(), talents.get(i).getLink(), textViewTalent2, textViewDescription2, talents.get(i).getHidden());
         }
+        FavoriteRepository favRepo = FavoriteRepository.getInstance(getContext());
+        if (favRepo.isFavorite(pokemon)) imageViewEtoile.setImageResource(R.mipmap.etoile_pleine);
+        else imageViewEtoile.setImageResource(R.mipmap.etoile_vide);
+        imageViewEtoile.setOnClickListener(v -> {
+            if (favRepo.isFavorite(pokemon)) {
+                imageViewEtoile.setImageResource(R.mipmap.etoile_vide);
+                favRepo.remove(pokemon);
+            } else {
+                imageViewEtoile.setImageResource(R.mipmap.etoile_pleine);
+                favRepo.add(pokemon);
+            }
+        });
         for (int i = 0; i < pokemon.getTypes().size(); i++) {
             int image = 0;
             switch (pokemon.getTypes().get(i)) {

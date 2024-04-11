@@ -27,7 +27,6 @@
             android:layout_height="wrap_content"
             android:text="Nom (N° )"
             tools:ignore="HardcodedText" />
-
         <ImageView
             android:id="@+id/imageViewPokemon"
             android:minHeight="350dp"
@@ -40,6 +39,17 @@
             android:clickable="true"
             android:focusable="true"
             android:contentDescription="image du pokémon"
+            tools:ignore="HardcodedText" />
+        <ImageView
+            android:id="@+id/imageViewEtoile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/imageViewPokemon"
+            android:layout_alignBottom="@id/imageViewPokemon"
+            android:src="@mipmap/etoile_vide"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="logo étoile"
             tools:ignore="HardcodedText" />
     </RelativeLayout>
     <LinearLayout

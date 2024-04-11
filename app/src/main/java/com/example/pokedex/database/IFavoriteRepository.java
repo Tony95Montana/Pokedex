@@ -1,17 +1,11 @@
-package net.merryservices.appmusics.database;
+package com.example.pokedex.database;
 
-import net.merryservices.appmusics.model.Music;
-
+import com.example.pokedex.models.Pokemon;
 import java.util.ArrayList;
 
 public interface IFavoriteRepository {
-
-    public boolean add(Music m);
-
-    public boolean remove(Music m);
-
-    public boolean isFavorite(Music m);
-
-    public ArrayList<Music> getAll();
-
+    boolean add(Pokemon m);
+    boolean remove(Pokemon m);
+    boolean isFavorite(Pokemon m);
+    ArrayList<Pokemon> getAll();
 }
