@@ -44,7 +44,7 @@ public class PokemonFragment extends Fragment implements SearchObserver {
         return v;
     }
     public void onSelectPokemon(@NonNull Pokemon pokemon) {
-        textViewTitle.setText(Html.fromHtml(pokemon.getNom() + " (N° <strong><i>" + pokemon.getId() + "</i></strong>)", Html.FROM_HTML_MODE_COMPACT));
+        textViewTitle.setText(Html.fromHtml(pokemon.getNom() + " N° <strong><i>" + pokemon.getId() + "</i></strong>", Html.FROM_HTML_MODE_COMPACT));
         ApiServices.loadPokemonData(getContext(), pokemon.getId(), pokemon, this);
         ApiServices.loadPokemonAvatar(getContext(), pokemon.getId(), false, imageView);
         imageView.setOnClickListener(v -> {

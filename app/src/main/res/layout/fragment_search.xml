@@ -4,19 +4,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
-    <TextView
+    tools:context=".MainActivity"
+    tools:ignore="VisualLintBounds">
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10sp"
-        android:gravity="center"
-        android:background="@drawable/title_border"
-        android:textStyle="bold|italic"
-        android:textColor="@color/white"
-        android:paddingVertical="6dp"
-        android:text="@string/app_name"
-        android:textSize="30sp" />
-
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="UselessParent">
+            <TextView
+                android:id="@+id/header_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10sp"
+                android:gravity="center"
+                android:background="@drawable/title_border"
+                android:textStyle="bold|italic"
+                android:textColor="@color/white"
+                android:paddingVertical="6dp"
+                android:text="@string/app_name"
+                android:textSize="30sp" />
+            <ImageButton
+                android:id="@+id/imageButtonFav"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="25dp"
+                android:background="@color/black"
+                android:src="@mipmap/etoile_vide_black"
+                android:layout_alignEnd="@id/header_title"
+                android:adjustViewBounds="true"
+                android:maxWidth="48dp"
+                android:maxHeight="48dp"
+                android:scaleType="fitCenter"
+                android:contentDescription="logo étoile"
+                tools:ignore="HardcodedText" />
+        </RelativeLayout>
+    </LinearLayout>
     <SearchView
         android:id='@+id/searchViewMain'
         android:layout_width="match_parent"

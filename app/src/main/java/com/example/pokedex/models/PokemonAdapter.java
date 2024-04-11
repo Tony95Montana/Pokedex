@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class PokemonAdapter extends BaseAdapter {
     private ArrayList<Pokemon> pokemons;
-    private Context context;
+    private final Context context;
 
     public PokemonAdapter(ArrayList<Pokemon> pokemons, Context context) {
         this.pokemons = pokemons;
@@ -43,7 +43,7 @@ public class PokemonAdapter extends BaseAdapter {
         TextView textViewNom = convertView.findViewById(R.id.textViewNom);
         textViewNom.setText(pokemons.get(position).getNom());
         TextView textViewId = convertView.findViewById(R.id.textViewId);
-        textViewId.setText(Html.fromHtml("(N° <strong><i>"+pokemons.get(position).getId()+"</i></strong>)", Html.FROM_HTML_MODE_COMPACT));
+        textViewId.setText(Html.fromHtml("N° <strong><i>"+pokemons.get(position).getId()+"</i></strong>", Html.FROM_HTML_MODE_COMPACT));
 
         ImageView imageView = convertView.findViewById(R.id.imageViewItemPokemon);
         ApiServices.loadPokemonAvatar(context, pokemons.get(position).getId(), false, imageView);

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Pokemon implements Serializable {
     private int id;
-    private String nom;
+    private final String nom;
     private String height;
     private String poids;
     private ArrayList<String> types;
@@ -29,7 +29,6 @@ public class Pokemon implements Serializable {
     public String getNom() {
         return nom;
     }
-    public void setNom(String nom) {this.nom = nom;}
     public String getHeight() {return height;}
     public void setHeight(String height) {
         this.height = height;
