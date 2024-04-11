@@ -43,8 +43,10 @@ public class ApiServices {
                     JSONObject jsonObject = new JSONObject(response);
                     JSONArray results = jsonObject.getJSONArray("results");
                     for (int i = 0; i < results.length(); i++) {
-                        Pokemon pokemon = new Pokemon(i + 1, results.getJSONObject(i).getString("name"), "", "");
-                        listener.onReceivePokemonInfo(pokemon);
+                        if (i + 1 == Integer.parseInt(results.getJSONObject(i).getString("url").split("/")[6])) {
+                            Pokemon pokemon = new Pokemon(i + 1, results.getJSONObject(i).getString("name"), "", "");
+                            listener.onReceivePokemonInfo(pokemon);
+                        }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

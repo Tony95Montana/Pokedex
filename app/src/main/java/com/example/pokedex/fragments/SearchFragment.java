@@ -27,7 +27,6 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private ArrayList<Pokemon> res;
     private boolean research;
     private SearchObserver listener;
-    private static final int OFFSET = 1302;
     private int finish;
     public void setListener(SearchObserver listener) {
         this.listener = listener;
@@ -75,7 +74,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     public void onReceivePokemonInfo(Pokemon pokemon) {
         if (!pokemons.contains(pokemon)) {
             finish += 1;
-            if (finish == OFFSET) progressBar.setVisibility(View.INVISIBLE);
+            if (finish == 1000) progressBar.setVisibility(View.INVISIBLE);
             pokemons.add(pokemon);
             adapter.setPokemons(pokemons);
             adapter.notifyDataSetChanged();
