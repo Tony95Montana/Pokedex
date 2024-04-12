@@ -1,9 +1,12 @@
 package com.example.pokedex;
 
+import static androidx.appcompat.app.AppCompatDelegate.setDefaultNightMode;
+
 import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import com.example.pokedex.fragments.PokemonFragment;
 import com.example.pokedex.fragments.SearchFragment;
 import com.example.pokedex.models.Pokemon;
@@ -15,6 +18,7 @@ public class MainActivity extends AppCompatActivity implements SearchObserver {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         searchFragment = new SearchFragment();
