@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:id="@+id/imageButtonGoBack"
+            android:layout_width="60dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_height="50dp"
+            android:scaleX="-1"
+            android:background="@color/white"
+            style="@style/Widget.Material3.Search.ActionButton.Overflow"
+            android:src="@mipmap/go_back_foreground"
+            android:contentDescription="Button retour"
+            tools:ignore="HardcodedText" />
+        <TextView
+            android:id="@+id/textViewTitle"
+            android:textAlignment="center"
+            android:layout_width="match_parent"
+            android:textSize="28sp"
+            android:layout_height="wrap_content"
+            android:text="Nom N° "
+            tools:ignore="HardcodedText" />
+        <ImageView
+            android:id="@+id/imageViewPokemon"
+            android:minHeight="350dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:paddingVertical="3dp"
+            android:src="@mipmap/no_pokemon"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="image du pokémon"
+            tools:ignore="HardcodedText" />
+        <ImageView
+            android:id="@+id/imageViewEtoile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/imageViewPokemon"
+            android:layout_alignBottom="@id/imageViewPokemon"
+            android:src="@mipmap/etoile_vide"
+            android:clickable="true"
+            android:focusable="true"
+            android:contentDescription="logo étoile"
+            tools:ignore="HardcodedText" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingHorizontal="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:text="@string/titre_type"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/imageViewTypes1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:src="@mipmap/water"
+                android:contentDescription="Type 1 du pokemon"
+                tools:ignore="HardcodedText" />
+            <ImageView
+                android:id="@+id/imageViewTypes2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="50"
+                android:src="@mipmap/fire"
+                android:contentDescription="Type 2 du pokemon"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="10dp"
+            android:textSize="24sp"
+            android:text="@string/title_talent"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewTalent1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:layout_weight="50"
+                android:text="Talent 1"
+                tools:ignore="HardcodedText"/>
+            <TextView
+                android:id="@+id/textViewTalent2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:layout_weight="50"
+                android:text="Talent 2"
+                tools:ignore="HardcodedText"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewDescription1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textStyle="italic"
+                android:gravity="center"
+                android:layout_weight="50"
+                android:text="Description 1"
+                tools:ignore="HardcodedText"/>
+            <TextView
+                android:id="@+id/textViewDescription2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textStyle="italic"
+                android:gravity="center"
+                android:layout_weight="50"
+                android:text="Description 2"
+                tools:ignore="HardcodedText"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingHorizontal="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/textViewTaille"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="50"
+                android:textSize="24sp"
+                android:text="Taille : 0 m"
+                tools:ignore="HardcodedText"/>
+            <TextView
+                android:id="@+id/textViewPoids"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="50"
+                android:textSize="24sp"
+                android:text="Poids : 0 Kg"
+                tools:ignore="HardcodedText"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
