@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Pokedex</string>
-    <string name="titre_type">Type :</string>
     <string name="title_talent">Talent :</string>
+    <string name="hp">HP</string>
+    <string name="attack">Attack</string>
+    <string name="attack_sp_cial">Attack Spé</string>
+    <string name="d_fense_sp_cial">Défense Spé</string>
+    <string name="d_fense">Défense</string>
+    <string name="vitesse">Vitesse</string>
 </resources>

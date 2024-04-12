@@ -28,6 +28,7 @@ public class ApiServices {
                 pokemon.setPoids(pokeJSON.getString("weight"));
                 pokemon.setTypes(pokeJSON.getJSONArray("types"));
                 pokemon.setTalents(pokeJSON.getJSONArray("abilities"));
+                pokemon.setStat(pokeJSON.getJSONArray("stats"));
                 pokemon.setCri(pokeJSON.getJSONObject("cries").getString("legacy"));
                 listener.onReceivePokemonData(pokemon);
             } catch (JSONException e) {

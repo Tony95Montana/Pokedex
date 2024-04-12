@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -28,6 +29,7 @@ public class PokemonFragment extends Fragment implements SearchObserver {
     private ImageButton imageButtonGoBack;
     private ImageView imageView, imageViewTypes1, imageViewTypes2, imageViewEtoile;
     private TextView textViewTitle, textViewTaille, textViewPoids, textViewTalent1, textViewTalent2, textViewDescription1, textViewDescription2;
+    private ProgressBar ProgressBarHp, ProgressBarAttack, ProgressBarDefense, ProgressBarAttackSpecial, ProgressBarDefenseSpecial, ProgressBarSpeed;
     private boolean shiny;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,6 +47,12 @@ public class PokemonFragment extends Fragment implements SearchObserver {
         imageView = v.findViewById(R.id.imageViewPokemon);
         imageViewEtoile = v.findViewById(R.id.imageViewEtoile);
         imageButtonGoBack = v.findViewById(R.id.imageButtonGoBack);
+        ProgressBarHp = v.findViewById(R.id.ProgressBarHp);
+        ProgressBarAttack = v.findViewById(R.id.ProgressBarAttack);
+        ProgressBarDefense = v.findViewById(R.id.ProgressBarDefense);
+        ProgressBarAttackSpecial = v.findViewById(R.id.ProgressBarAttackSpecial);
+        ProgressBarDefenseSpecial = v.findViewById(R.id.ProgressBarDefenseSpecial);
+        ProgressBarSpeed = v.findViewById(R.id.ProgressBarSpeed);
         this.shiny = false;
         return v;
     }
@@ -81,6 +89,35 @@ public class PokemonFragment extends Fragment implements SearchObserver {
         for (int i = 0; i < talents.size(); i++) {
             if (i == 0) ApiServices.loadPokemonTalent(getContext(), talents.get(i).getLink(), textViewTalent1, textViewDescription1, talents.get(i).getHidden());
             else ApiServices.loadPokemonTalent(getContext(), talents.get(i).getLink(), textViewTalent2, textViewDescription2, talents.get(i).getHidden());
+        }
+        ArrayList<Integer> stats = pokemon.getStat();
+        for (int i = 0; i < stats.size(); i++) {
+            switch (i) {
+                case 0:
+                    ProgressBarHp.setProgress(stats.get(i));
+                    break;
+                case 1:
+                    ProgressBarAttack.setProgress(stats.get(i));
+                    break;
+                case 2:
+                    ProgressBarDefense.setProgress(stats.get(i));
+                    break;
+                case 3:
+                    ProgressBarAttackSpecial.setProgress(stats.get(i));
+                    break;
+                case 4:
+                    ProgressBarDefenseSpecial.setProgress(stats.get(i));
+                    break;
+                case 5:
+                    ProgressBarSpeed.setProgress(stats.get(i));
+                    break;
+            }
+//            if (i == 0) ProgressBarHp.setProgress(stats.get(i));
+//            else if (i == 1) ProgressBarAttack.setProgress(stats.get(i));
+//            else if (i == 2) ProgressBarDefense.setProgress(stats.get(i));
+//            else if (i == 3) ProgressBarAttackSpecial.setProgress(stats.get(i));
+//            else if (i == 4) ProgressBarDefenseSpecial.setProgress(stats.get(i));
+//            else if (i == 5) ProgressBarSpeed.setProgress(stats.get(i));
         }
         FavoriteRepository favRepo = FavoriteRepository.getInstance(getContext());
         if (favRepo.isFavorite(pokemon)) imageViewEtoile.setImageResource(R.mipmap.etoile_pleine);

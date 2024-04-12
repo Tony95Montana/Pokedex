@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="40dp"
             android:paddingVertical="3dp"
             android:src="@mipmap/no_pokemon"
             android:clickable="true"
@@ -57,15 +57,9 @@
         android:layout_height="match_parent"
         android:paddingHorizontal="10dp"
         android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:text="@string/titre_type"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
             android:orientation="horizontal">
             <ImageView
                 android:id="@+id/imageViewTypes1"
@@ -141,7 +135,142 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:gravity="center"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <ProgressBar
+                    android:id="@+id/ProgressBarHp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginHorizontal="5dp"
+                    android:minWidth="50dp"
+                    android:minHeight="150dp"
+                    android:scaleType="fitCenter"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:scaleX="2.8"
+                    android:rotation="270"/>
+                <ProgressBar
+                    android:id="@+id/ProgressBarAttack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginHorizontal="5dp"
+                    android:minWidth="50dp"
+                    android:minHeight="150dp"
+                    android:scaleType="fitCenter"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:scaleX="2.8"
+                    android:rotation="270"/>
+                <ProgressBar
+                    android:id="@+id/ProgressBarDefense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginHorizontal="5dp"
+                    android:minWidth="50dp"
+                    android:minHeight="150dp"
+                    android:scaleType="fitCenter"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:scaleX="2.8"
+                    android:rotation="270"/>
+                <ProgressBar
+                    android:id="@+id/ProgressBarAttackSpecial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginHorizontal="5dp"
+                    android:minWidth="50dp"
+                    android:minHeight="150dp"
+                    android:scaleType="fitCenter"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:scaleX="2.8"
+                    android:rotation="270"/>
+                <ProgressBar
+                    android:id="@+id/ProgressBarDefenseSpecial"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:layout_marginHorizontal="5dp"
+                    android:minWidth="50dp"
+                    android:minHeight="150dp"
+                    android:scaleType="fitCenter"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:scaleX="2.8"
+                    android:rotation="270"/>
+                <ProgressBar
+                    android:id="@+id/ProgressBarSpeed"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:minWidth="50dp"
+                    android:minHeight="150dp"
+                    android:scaleType="fitCenter"
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:scaleX="2.8"
+                    android:rotation="270"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="20dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="11sp"
+                    android:gravity="center"
+                    android:layout_marginStart="30dp"
+                    android:layout_weight="20"
+                    android:text="@string/hp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="11sp"
+                    android:gravity="center"
+                    android:layout_marginStart="25dp"
+                    android:layout_weight="20"
+                    android:text="@string/attack"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="11sp"
+                    android:gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="20"
+                    android:text="@string/d_fense"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="11sp"
+                    android:gravity="center"
+                    android:layout_weight="10"
+                    android:text="@string/attack_sp_cial"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="11sp"
+                    android:gravity="center"
+                    android:layout_weight="10"
+                    android:text="@string/d_fense_sp_cial"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textSize="11sp"
+                    android:gravity="center"
+                    android:layout_weight="20"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/vitesse"/>
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
             android:paddingHorizontal="10dp"
             android:orientation="horizontal">
             <TextView

@@ -13,6 +13,7 @@ public class Pokemon implements Serializable {
     private String poids;
     private ArrayList<String> types;
     private ArrayList<Talent> talents;
+    private ArrayList<Integer> stats;
     private String cri;
 
     public Pokemon(int id, String nom, String height, String poids, String cri) {
@@ -22,6 +23,7 @@ public class Pokemon implements Serializable {
         this.poids = poids;
         this.types = new ArrayList<>();
         this.talents = new ArrayList<>();
+        this.stats = new ArrayList<>();
         this.cri = cri;
     }
     public int getId() {
@@ -67,4 +69,15 @@ public class Pokemon implements Serializable {
     }
     public String getCri() {return this.cri;}
     public void setCri(String cri) {this.cri = cri;}
+    public ArrayList<Integer> getStat() {return this.stats;}
+    public void setStat(@NonNull JSONArray stat) {
+        this.stats = new ArrayList<>();
+        for (int i = 0; i < stat.length(); i++) {
+            try {
+                stats.add(Integer.parseInt(stat.getJSONObject(i).getString("base_stat")));
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }
