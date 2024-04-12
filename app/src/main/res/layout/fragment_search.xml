@@ -35,6 +35,7 @@
                 android:src="@mipmap/etoile_vide_black"
                 android:layout_alignEnd="@id/header_title"
                 android:adjustViewBounds="true"
+                android:padding="5dp"
                 android:maxWidth="48dp"
                 android:maxHeight="48dp"
                 android:scaleType="fitCenter"
@@ -56,7 +57,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="5dp"
-            android:layout_margin="20sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginHorizontal="20dp"
             android:background="@drawable/list_background"
             tools:listitem="@layout/item_pokemon"/>
         <ProgressBar
