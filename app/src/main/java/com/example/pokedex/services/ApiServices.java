@@ -28,6 +28,7 @@ public class ApiServices {
                 pokemon.setPoids(pokeJSON.getString("weight"));
                 pokemon.setTypes(pokeJSON.getJSONArray("types"));
                 pokemon.setTalents(pokeJSON.getJSONArray("abilities"));
+                pokemon.setCri(pokeJSON.getJSONObject("cries").getString("legacy"));
                 listener.onReceivePokemonData(pokemon);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -44,7 +45,7 @@ public class ApiServices {
                     JSONArray results = jsonObject.getJSONArray("results");
                     for (int i = 0; i < results.length(); i++) {
                         if (i + 1 == Integer.parseInt(results.getJSONObject(i).getString("url").split("/")[6])) {
-                            Pokemon pokemon = new Pokemon(i + 1, results.getJSONObject(i).getString("name"), "", "");
+                            Pokemon pokemon = new Pokemon(i + 1, results.getJSONObject(i).getString("name"), "", "", "");
                             listener.onReceivePokemonInfo(pokemon);
                         }
                     }

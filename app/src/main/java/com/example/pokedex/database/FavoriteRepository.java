@@ -64,7 +64,8 @@ public class FavoriteRepository implements IFavoriteRepository{
             Pokemon m = new Pokemon(c.getInt(0),
                     c.getString(1),
                     c.getString(2),
-                    c.getString(3));
+                    c.getString(3),
+                    "");
             try {
                 JSONArray types = new JSONArray();
                 String[] tableau = c.getString(4).split(", ");

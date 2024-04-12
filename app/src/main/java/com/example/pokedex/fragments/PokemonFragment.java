@@ -1,6 +1,10 @@
 package com.example.pokedex.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -18,6 +22,7 @@ import com.example.pokedex.models.Talent;
 import com.example.pokedex.services.ApiServices;
 import com.example.pokedex.services.SearchObserver;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class PokemonFragment extends Fragment implements SearchObserver {
     private ImageButton imageButtonGoBack;
@@ -43,11 +48,18 @@ public class PokemonFragment extends Fragment implements SearchObserver {
         this.shiny = false;
         return v;
     }
+    private void cri(String cri) {
+        AudioManager meng = (AudioManager) requireContext().getSystemService(Context.AUDIO_SERVICE);
+        meng.getStreamVolume( AudioManager.STREAM_NOTIFICATION);
+        MediaPlayer shootMP = MediaPlayer.create(getContext(), Uri.parse(cri));
+        shootMP.start();
+    }
     public void onSelectPokemon(@NonNull Pokemon pokemon) {
         textViewTitle.setText(Html.fromHtml(pokemon.getNom() + " N° <strong><i>" + pokemon.getId() + "</i></strong>", Html.FROM_HTML_MODE_COMPACT));
         ApiServices.loadPokemonData(getContext(), pokemon.getId(), pokemon, this);
         ApiServices.loadPokemonAvatar(getContext(), pokemon.getId(), false, imageView);
         imageView.setOnClickListener(v -> {
+            cri(pokemon.getCri());
             if (shiny) {
                 shiny = false;
                 ApiServices.loadPokemonAvatar(getContext(), pokemon.getId(), false, imageView);
@@ -140,5 +152,6 @@ public class PokemonFragment extends Fragment implements SearchObserver {
             if (i == 0) imageViewTypes1.setImageResource(image);
             else imageViewTypes2.setImageResource(image);
         }
+        cri(pokemon.getCri());
     }
 }
