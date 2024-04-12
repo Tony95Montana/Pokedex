@@ -23,7 +23,6 @@ import com.example.pokedex.models.Talent;
 import com.example.pokedex.services.ApiServices;
 import com.example.pokedex.services.SearchObserver;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PokemonFragment extends Fragment implements SearchObserver {
     private ImageButton imageButtonGoBack;
@@ -112,12 +111,6 @@ public class PokemonFragment extends Fragment implements SearchObserver {
                     ProgressBarSpeed.setProgress(stats.get(i));
                     break;
             }
-//            if (i == 0) ProgressBarHp.setProgress(stats.get(i));
-//            else if (i == 1) ProgressBarAttack.setProgress(stats.get(i));
-//            else if (i == 2) ProgressBarDefense.setProgress(stats.get(i));
-//            else if (i == 3) ProgressBarAttackSpecial.setProgress(stats.get(i));
-//            else if (i == 4) ProgressBarDefenseSpecial.setProgress(stats.get(i));
-//            else if (i == 5) ProgressBarSpeed.setProgress(stats.get(i));
         }
         FavoriteRepository favRepo = FavoriteRepository.getInstance(getContext());
         if (favRepo.isFavorite(pokemon)) imageViewEtoile.setImageResource(R.mipmap.etoile_pleine);
