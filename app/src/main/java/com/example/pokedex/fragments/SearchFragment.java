@@ -80,7 +80,12 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         }
         res.clear();
         for (int i = 0; i < pokemons.size(); i++) {
-            if (pokemons.get(i).getNom().contains(query)) res.add(pokemons.get(i));
+            try {
+                int value = Integer.parseInt(query);
+                if (pokemons.get(i).getId() == value) res.add(pokemons.get(i));
+            } catch (NumberFormatException e) {
+                if (pokemons.get(i).getNom().contains(query)) res.add(pokemons.get(i));
+            }
         }
         adapter.setPokemons(res);
         adapter.notifyDataSetChanged();

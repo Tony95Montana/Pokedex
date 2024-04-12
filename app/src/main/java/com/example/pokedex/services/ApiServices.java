@@ -29,7 +29,9 @@ public class ApiServices {
                 pokemon.setTypes(pokeJSON.getJSONArray("types"));
                 pokemon.setTalents(pokeJSON.getJSONArray("abilities"));
                 pokemon.setStat(pokeJSON.getJSONArray("stats"));
-                pokemon.setCri(pokeJSON.getJSONObject("cries").getString("legacy"));
+                String cri = pokeJSON.getJSONObject("cries").getString("legacy");
+                if (cri.equals("null")) pokemon.setCri(pokeJSON.getJSONObject("cries").getString("latest"));
+                else pokemon.setCri(cri);
                 listener.onReceivePokemonData(pokemon);
             } catch (JSONException e) {
                 e.printStackTrace();
