@@ -40,36 +40,32 @@ public class ApiServices {
         queue.add(requestFinal);
     }
     public static void getAllPokemon(Context context, SearchObserver listener) {
-        new Thread(() -> {
-            RequestQueue queue = Volley.newRequestQueue(context);
-            StringRequest request = new StringRequest(URL_API, response -> {
-                try {
-                    JSONObject jsonObject = new JSONObject(response);
-                    JSONArray results = jsonObject.getJSONArray("results");
-                    for (int i = 0; i < results.length(); i++) {
-                        if (i + 1 == Integer.parseInt(results.getJSONObject(i).getString("url").split("/")[6])) {
-                            Pokemon pokemon = new Pokemon(i + 1, results.getJSONObject(i).getString("name"), "", "", "");
-                            listener.onReceivePokemonInfo(pokemon);
-                        }
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest request = new StringRequest(URL_API, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONArray results = jsonObject.getJSONArray("results");
+                for (int i = 0; i < results.length(); i++) {
+                    if (i + 1 == Integer.parseInt(results.getJSONObject(i).getString("url").split("/")[6])) {
+                        Pokemon pokemon = new Pokemon(i + 1, results.getJSONObject(i).getString("name"), "", "", "");
+                        listener.onReceivePokemonInfo(pokemon);
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }, Throwable::printStackTrace);
-            queue.add(request);
-        }).start();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, Throwable::printStackTrace);
+        queue.add(request);
     }
     public static void loadPokemonAvatar(Context context, int id, boolean shiny, @NonNull final ImageView imageView){
-        new Thread(() -> {
-            String url;
-            if (shiny) url = URL_SHINY + id + ".png";
-            else url = URL_AVATAR + id + ".png";
-            RequestQueue queue = Volley.newRequestQueue(context);
-            ImageRequest request = new ImageRequest(url,
-                    imageView::setImageBitmap, 0, 0, null,
-                    error -> imageView.setImageResource(android.R.drawable.ic_menu_gallery));
-            queue.add(request);
-        }).start();
+        String url;
+        if (shiny) url = URL_SHINY + id + ".png";
+        else url = URL_AVATAR + id + ".png";
+        RequestQueue queue = Volley.newRequestQueue(context);
+        ImageRequest request = new ImageRequest(url,
+                imageView::setImageBitmap, 0, 0, null,
+                error -> imageView.setImageResource(android.R.drawable.ic_menu_gallery));
+        queue.add(request);
     }
     public static void loadPokemonTalent(Context context, String url, final TextView nom,  final TextView desc, boolean hidden){
         RequestQueue queue = Volley.newRequestQueue(context);

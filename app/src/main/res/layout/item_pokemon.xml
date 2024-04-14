@@ -11,13 +11,17 @@
         android:minHeight="150dp"
         android:layout_height="wrap_content"
         android:layout_weight="50"
-        android:src="@mipmap/no_pokemon" />
+        android:src="@mipmap/no_pokemon"
+        android:contentDescription="image du pokemon"
+        tools:ignore="HardcodedText" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_weight="50"
+        android:paddingEnd="8dp"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="RtlSymmetry">
 
         <TextView
             android:id="@+id/textViewNom"

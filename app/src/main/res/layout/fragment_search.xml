@@ -58,6 +58,8 @@
             android:layout_height="match_parent"
             android:padding="5dp"
             android:layout_marginTop="20dp"
+            android:fastScrollEnabled="true"
+            android:fastScrollAlwaysVisible="false"
             android:layout_marginBottom="5dp"
             android:layout_marginHorizontal="20dp"
             android:background="@drawable/list_background"

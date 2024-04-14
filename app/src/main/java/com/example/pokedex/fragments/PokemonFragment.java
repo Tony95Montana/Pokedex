@@ -23,7 +23,6 @@ import com.example.pokedex.models.Talent;
 import com.example.pokedex.services.ApiServices;
 import com.example.pokedex.services.SearchObserver;
 import java.util.ArrayList;
-import java.util.Objects;
 
 public class PokemonFragment extends Fragment implements SearchObserver {
     private ImageButton imageButtonGoBack;
@@ -65,9 +64,22 @@ public class PokemonFragment extends Fragment implements SearchObserver {
         }
     }
     public void onSelectPokemon(@NonNull Pokemon pokemon) {
+        imageView.setImageResource(R.mipmap.no_pokemon);
+        ApiServices.loadPokemonAvatar(getContext(), pokemon.getId(), false, imageView);
+        FavoriteRepository favRepo = FavoriteRepository.getInstance(getContext());
+        if (favRepo.isFavorite(pokemon)) imageViewEtoile.setImageResource(R.mipmap.etoile_pleine);
+        else imageViewEtoile.setImageResource(R.mipmap.etoile_vide);
+        imageViewEtoile.setOnClickListener(v -> {
+            if (favRepo.isFavorite(pokemon)) {
+                imageViewEtoile.setImageResource(R.mipmap.etoile_vide);
+                favRepo.remove(pokemon);
+            } else {
+                imageViewEtoile.setImageResource(R.mipmap.etoile_pleine);
+                favRepo.add(pokemon);
+            }
+        });
         textViewTitle.setText(Html.fromHtml(pokemon.getNom() + " N° <strong><i>" + pokemon.getId() + "</i></strong>", Html.FROM_HTML_MODE_COMPACT));
         ApiServices.loadPokemonData(getContext(), pokemon.getId(), pokemon, this);
-        ApiServices.loadPokemonAvatar(getContext(), pokemon.getId(), false, imageView);
         imageView.setOnClickListener(v -> {
             cri(pokemon.getCri());
             if (shiny) {
@@ -115,18 +127,6 @@ public class PokemonFragment extends Fragment implements SearchObserver {
                     break;
             }
         }
-        FavoriteRepository favRepo = FavoriteRepository.getInstance(getContext());
-        if (favRepo.isFavorite(pokemon)) imageViewEtoile.setImageResource(R.mipmap.etoile_pleine);
-        else imageViewEtoile.setImageResource(R.mipmap.etoile_vide);
-        imageViewEtoile.setOnClickListener(v -> {
-            if (favRepo.isFavorite(pokemon)) {
-                imageViewEtoile.setImageResource(R.mipmap.etoile_vide);
-                favRepo.remove(pokemon);
-            } else {
-                imageViewEtoile.setImageResource(R.mipmap.etoile_pleine);
-                favRepo.add(pokemon);
-            }
-        });
         for (int i = 0; i < pokemon.getTypes().size(); i++) {
             int image = 0;
             switch (pokemon.getTypes().get(i)) {
@@ -141,6 +141,9 @@ public class PokemonFragment extends Fragment implements SearchObserver {
                     break;
                 case "dark":
                     image = R.mipmap.dark;
+                    break;
+                case "dragon":
+                    image = R.mipmap.dragon;
                     break;
                 case "poison":
                     image = R.mipmap.poison;
