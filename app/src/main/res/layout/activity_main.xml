@@ -4,9 +4,12 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:screenOrientation="portrait"
+    android:configChanges="orientation|keyboardHidden"
     android:background="@color/white"
     tools:context=".MainActivity"
-    android:baselineAligned="false">
+    android:baselineAligned="false"
+    tools:ignore="DiscouragedApi">
 
     <FrameLayout
         android:id="@+id/frameLayout"
