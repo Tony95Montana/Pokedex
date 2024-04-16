@@ -14,11 +14,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class ApiServices {
     private static final String URL_API="https://pokeapi.co/api/v2/pokemon?limit=10000";
     private static final String URL_AVATAR="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/";
     private static final String URL_SHINY="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/shiny/";
     private static final String URL_DATA="https://pokeapi.co/api/v2/pokemon/";
+    private static final String URL_BIG_DATA="https://pokeapi.co/api/v2/pokemon-species/";
     public static void loadPokemonData(Context context, int id, Pokemon pokemon, SearchObserver listener) {
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest requestFinal = new StringRequest(URL_DATA + id, result -> {
@@ -32,7 +35,7 @@ public class ApiServices {
                 String cri = pokeJSON.getJSONObject("cries").getString("legacy");
                 if (cri.equals("null")) pokemon.setCri(pokeJSON.getJSONObject("cries").getString("latest"));
                 else pokemon.setCri(cri);
-                listener.onReceivePokemonData(pokemon);
+                ApiServices.loadPokemonBigData(context, id, pokemon, listener);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -57,7 +60,44 @@ public class ApiServices {
         }, Throwable::printStackTrace);
         queue.add(request);
     }
-    public static void loadPokemonAvatar(Context context, int id, boolean shiny, @NonNull final ImageView imageView){
+    private static void loadPokemonBigData(Context context, int id, Pokemon pokemon, SearchObserver listener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest request = new StringRequest(URL_BIG_DATA + id, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                pokemon.setLink(jsonObject.getJSONObject("evolution_chain").getString("url"));
+                JSONArray names = jsonObject.getJSONArray("names");
+                for (int i = 0; i < names.length(); i++) {
+                    String langue = names.getJSONObject(i).getJSONObject("language").getString("name");
+                    if (langue.equals("fr")) pokemon.setNomFR(names.getJSONObject(i).getString("name"));
+                    ApiServices.loadPokemonEvolution(context, pokemon.getLink(), pokemon, listener);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, Throwable::printStackTrace);
+        queue.add(request);
+    }
+    public static void loadPokemonEvolution(Context context, String url, Pokemon pokemon, SearchObserver listener) {
+        RequestQueue queue = Volley.newRequestQueue(context);
+        StringRequest request = new StringRequest(url, response -> {
+            try {
+                JSONObject jsonObject = new JSONObject(response);
+                JSONObject chain = jsonObject.getJSONObject("chain");
+                ArrayList<String> res = new ArrayList<>();
+                res.add(chain.getJSONObject("species").getString("url"));
+                JSONObject evolveTo = chain.getJSONArray("evolves_to").getJSONObject(0);
+                res.add(evolveTo.getJSONObject("species").getString("url"));
+                res.add(evolveTo.getJSONArray("evolves_to").getJSONObject(0).getJSONObject("species").getString("url"));
+                pokemon.setEvolutions(res);
+                listener.onReceivePokemonData(pokemon);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }, Throwable::printStackTrace);
+        queue.add(request);
+    }
+    public static void loadPokemonAvatar(Context context, int id, boolean shiny, @NonNull final ImageView imageView) {
         String url;
         if (shiny) url = URL_SHINY + id + ".png";
         else url = URL_AVATAR + id + ".png";
@@ -67,7 +107,7 @@ public class ApiServices {
                 error -> imageView.setImageResource(android.R.drawable.ic_menu_gallery));
         queue.add(request);
     }
-    public static void loadPokemonTalent(Context context, String url, final TextView nom,  final TextView desc, boolean hidden){
+    public static void loadPokemonTalent(Context context, String url, final TextView nom,  final TextView desc, boolean hidden) {
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest request = new StringRequest(url, response -> {
             try {

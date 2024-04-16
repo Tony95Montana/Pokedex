@@ -10,8 +10,10 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
@@ -25,11 +27,13 @@ import com.example.pokedex.services.SearchObserver;
 import java.util.ArrayList;
 
 public class PokemonFragment extends Fragment implements SearchObserver {
+    private LinearLayout linearTalent, linearDescription;
+    private Button buttonTalents;
     private ImageButton imageButtonGoBack;
-    private ImageView imageView, imageViewTypes1, imageViewTypes2, imageViewEtoile;
+    private ImageView imageView, imageViewTypes1, imageViewTypes2, imageViewEtoile, imageViewEvo1, imageViewEvo2, imageViewEvo3;
     private TextView textViewTitle, textViewTaille, textViewPoids, textViewTalent1, textViewTalent2, textViewDescription1, textViewDescription2;
     private ProgressBar ProgressBarHp, ProgressBarAttack, ProgressBarDefense, ProgressBarAttackSpecial, ProgressBarDefenseSpecial, ProgressBarSpeed;
-    private boolean shiny;
+    private boolean shiny, talent;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         @SuppressLint("InflateParams") View v = inflater.inflate(R.layout.fragment_pokemon, null);
@@ -46,6 +50,12 @@ public class PokemonFragment extends Fragment implements SearchObserver {
         imageView = v.findViewById(R.id.imageViewPokemon);
         imageViewEtoile = v.findViewById(R.id.imageViewEtoile);
         imageButtonGoBack = v.findViewById(R.id.imageButtonGoBack);
+        imageViewEvo1 = v.findViewById(R.id.imageViewEvo1);
+        imageViewEvo2 = v.findViewById(R.id.imageViewEvo2);
+        imageViewEvo3 = v.findViewById(R.id.imageViewEvo3);
+        buttonTalents = v.findViewById(R.id.buttonTalents);
+        linearTalent = v.findViewById(R.id.linearTalent);
+        linearDescription = v.findViewById(R.id.linearDescription);
         ProgressBarHp = v.findViewById(R.id.ProgressBarHp);
         ProgressBarAttack = v.findViewById(R.id.ProgressBarAttack);
         ProgressBarDefense = v.findViewById(R.id.ProgressBarDefense);
@@ -53,6 +63,7 @@ public class PokemonFragment extends Fragment implements SearchObserver {
         ProgressBarDefenseSpecial = v.findViewById(R.id.ProgressBarDefenseSpecial);
         ProgressBarSpeed = v.findViewById(R.id.ProgressBarSpeed);
         this.shiny = false;
+        this.talent = false;
         return v;
     }
     private void cri(@NonNull String cri) {
@@ -64,6 +75,9 @@ public class PokemonFragment extends Fragment implements SearchObserver {
         }
     }
     public void onSelectPokemon(@NonNull Pokemon pokemon) {
+        imageViewEvo1.setBackground(null);
+        imageViewEvo2.setBackground(null);
+        imageViewEvo3.setBackground(null);
         imageView.setImageResource(R.mipmap.no_pokemon);
         ApiServices.loadPokemonAvatar(getContext(), pokemon.getId(), false, imageView);
         FavoriteRepository favRepo = FavoriteRepository.getInstance(getContext());
@@ -76,6 +90,17 @@ public class PokemonFragment extends Fragment implements SearchObserver {
             } else {
                 imageViewEtoile.setImageResource(R.mipmap.etoile_pleine);
                 favRepo.add(pokemon);
+            }
+        });
+        buttonTalents.setOnClickListener(v -> {
+            if (talent) {
+                talent = false;
+                linearTalent.setVisibility(View.GONE);
+                linearDescription.setVisibility(View.GONE);
+            } else {
+                talent = true;
+                linearTalent.setVisibility(View.VISIBLE);
+                linearDescription.setVisibility(View.VISIBLE);
             }
         });
         textViewTitle.setText(Html.fromHtml(pokemon.getNom() + " N° <strong><i>" + pokemon.getId() + "</i></strong>", Html.FROM_HTML_MODE_COMPACT));
@@ -97,6 +122,7 @@ public class PokemonFragment extends Fragment implements SearchObserver {
     @SuppressLint("SetTextI18n")
     @Override
     public void onReceivePokemonData(@NonNull Pokemon pokemon) {
+        textViewTitle.setText(Html.fromHtml(pokemon.getNomFR() + " N° <strong><i>" + pokemon.getId() + "</i></strong>", Html.FROM_HTML_MODE_COMPACT));
         textViewTaille.setText("Taille : "+(Double.parseDouble(pokemon.getHeight())/10)+" m");
         textViewPoids.setText("Poids : "+(Double.parseDouble(pokemon.getPoids())/10)+" Kg");
         ArrayList<Talent> talents = pokemon.getTalents();
@@ -189,5 +215,19 @@ public class PokemonFragment extends Fragment implements SearchObserver {
             else imageViewTypes2.setImageResource(image);
         }
         cri(pokemon.getCri());
+        if (pokemon.getEvolutions() != null) {
+            for (int i = 0; i < pokemon.getEvolutions().size(); i++) {
+                if (i == 0) {
+                    if (Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]) == pokemon.getId()) imageViewEvo1.setBackgroundResource(R.drawable.search_border);
+                    ApiServices.loadPokemonAvatar(getContext(), Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]), false, imageViewEvo1);
+                } else if (i == 1) {
+                    if (Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]) == pokemon.getId()) imageViewEvo2.setBackgroundResource(R.drawable.search_border);
+                    ApiServices.loadPokemonAvatar(getContext(), Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]), false, imageViewEvo2);
+                } else {
+                    if (Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]) == pokemon.getId()) imageViewEvo3.setBackgroundResource(R.drawable.search_border);
+                    ApiServices.loadPokemonAvatar(getContext(), Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]), false, imageViewEvo3);
+                }
+            }
+        }
     }
 }

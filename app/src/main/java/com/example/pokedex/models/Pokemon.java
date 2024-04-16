@@ -8,12 +8,15 @@ import java.util.ArrayList;
 
 public class Pokemon implements Serializable {
     private int id;
-    private final String nom;
+    private String nom;
+    private String nomFR;
     private String height;
     private String poids;
     private ArrayList<String> types;
     private ArrayList<Talent> talents;
     private ArrayList<Integer> stats;
+    private ArrayList<String> evolutions;
+    private String link;
     private String cri;
 
     public Pokemon(int id, String nom, String height, String poids, String cri) {
@@ -33,6 +36,11 @@ public class Pokemon implements Serializable {
     public String getNom() {
         return nom;
     }
+    public void setNom(String nom) {this.nom = nom;}
+    public String getNomFR() {
+        return nomFR;
+    }
+    public void setNomFR(String nomFR) {this.nomFR = nomFR;}
     public String getHeight() {return height;}
     public void setHeight(String height) {
         this.height = height;
@@ -67,6 +75,10 @@ public class Pokemon implements Serializable {
             }
         }
     }
+    public ArrayList<String> getEvolutions() {return this.evolutions;}
+    public void setEvolutions(ArrayList<String> evolutions) {this.evolutions = evolutions;}
+    public String getLink() {return this.link;}
+    public void setLink(String link) {this.link = link;}
     public String getCri() {return this.cri;}
     public void setCri(String cri) {this.cri = cri;}
     public ArrayList<Integer> getStat() {return this.stats;}
