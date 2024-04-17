@@ -29,8 +29,8 @@ import java.util.ArrayList;
 public class PokemonFragment extends Fragment implements SearchObserver {
     private LinearLayout linearTalent, linearDescription;
     private Button buttonTalents;
-    private ImageButton imageButtonGoBack;
-    private ImageView imageView, imageViewTypes1, imageViewTypes2, imageViewEtoile, imageViewEvo1, imageViewEvo2, imageViewEvo3;
+    private ImageButton imageButtonGoBack, imageButtonEvo1, imageButtonEvo2, imageButtonEvo3;
+    private ImageView imageView, imageViewTypes1, imageViewTypes2, imageViewEtoile;
     private TextView textViewTitle, textViewTaille, textViewPoids, textViewTalent1, textViewTalent2, textViewDescription1, textViewDescription2;
     private ProgressBar ProgressBarHp, ProgressBarAttack, ProgressBarDefense, ProgressBarAttackSpecial, ProgressBarDefenseSpecial, ProgressBarSpeed;
     private boolean shiny, talent;
@@ -50,9 +50,9 @@ public class PokemonFragment extends Fragment implements SearchObserver {
         imageView = v.findViewById(R.id.imageViewPokemon);
         imageViewEtoile = v.findViewById(R.id.imageViewEtoile);
         imageButtonGoBack = v.findViewById(R.id.imageButtonGoBack);
-        imageViewEvo1 = v.findViewById(R.id.imageViewEvo1);
-        imageViewEvo2 = v.findViewById(R.id.imageViewEvo2);
-        imageViewEvo3 = v.findViewById(R.id.imageViewEvo3);
+        imageButtonEvo1 = v.findViewById(R.id.imageButtonEvo1);
+        imageButtonEvo2 = v.findViewById(R.id.imageButtonEvo2);
+        imageButtonEvo3 = v.findViewById(R.id.imageButtonEvo3);
         buttonTalents = v.findViewById(R.id.buttonTalents);
         linearTalent = v.findViewById(R.id.linearTalent);
         linearDescription = v.findViewById(R.id.linearDescription);
@@ -75,10 +75,20 @@ public class PokemonFragment extends Fragment implements SearchObserver {
         }
     }
     public void onSelectPokemon(@NonNull Pokemon pokemon) {
-        imageViewEvo1.setBackground(null);
-        imageViewEvo2.setBackground(null);
-        imageViewEvo3.setBackground(null);
+        imageButtonEvo1.setImageResource(R.mipmap.no_pokemon);
+        imageButtonEvo2.setImageResource(R.mipmap.no_pokemon);
+        imageButtonEvo3.setImageResource(R.mipmap.no_pokemon);
+        imageButtonEvo1.setBackground(null);
+        imageButtonEvo2.setBackground(null);
+        imageButtonEvo3.setBackground(null);
+        imageButtonEvo1.setOnClickListener(null);
+        imageButtonEvo2.setOnClickListener(null);
+        imageButtonEvo3.setOnClickListener(null);
         imageView.setImageResource(R.mipmap.no_pokemon);
+        textViewTalent1.setText(null);
+        textViewTalent2.setText(null);
+        textViewDescription1.setText(null);
+        textViewDescription2.setText(null);
         ApiServices.loadPokemonAvatar(getContext(), pokemon.getId(), false, imageView);
         FavoriteRepository favRepo = FavoriteRepository.getInstance(getContext());
         if (favRepo.isFavorite(pokemon)) imageViewEtoile.setImageResource(R.mipmap.etoile_pleine);
@@ -123,12 +133,29 @@ public class PokemonFragment extends Fragment implements SearchObserver {
     @Override
     public void onReceivePokemonData(@NonNull Pokemon pokemon) {
         textViewTitle.setText(Html.fromHtml(pokemon.getNomFR() + " N° <strong><i>" + pokemon.getId() + "</i></strong>", Html.FROM_HTML_MODE_COMPACT));
-        textViewTaille.setText("Taille : "+(Double.parseDouble(pokemon.getHeight())/10)+" m");
-        textViewPoids.setText("Poids : "+(Double.parseDouble(pokemon.getPoids())/10)+" Kg");
+        textViewTaille.setText("Taille : " + (Double.parseDouble(pokemon.getHeight())/10) + " m");
+        textViewPoids.setText("Poids : " + (Double.parseDouble(pokemon.getPoids())/10) + " Kg");
         ArrayList<Talent> talents = pokemon.getTalents();
-        for (int i = 0; i < talents.size(); i++) {
-            if (i == 0) ApiServices.loadPokemonTalent(getContext(), talents.get(i).getLink(), textViewTalent1, textViewDescription1, talents.get(i).getHidden());
-            else ApiServices.loadPokemonTalent(getContext(), talents.get(i).getLink(), textViewTalent2, textViewDescription2, talents.get(i).getHidden());
+        if (talents.size() == 1) {
+            ApiServices.loadPokemonTalent(getContext(), talents.get(0).getLink(), textViewTalent1, textViewDescription1, talents.get(0).getHidden());
+            textViewTalent2.setVisibility(View.GONE);
+            textViewDescription2.setVisibility(View.GONE);
+        } else if (talents.isEmpty()) {
+            buttonTalents.setVisibility(View.GONE);
+            textViewTalent1.setVisibility(View.GONE);
+            textViewDescription1.setVisibility(View.GONE);
+            textViewTalent2.setVisibility(View.GONE);
+            textViewDescription2.setVisibility(View.GONE);
+        } else {
+            buttonTalents.setVisibility(View.VISIBLE);
+            textViewTalent1.setVisibility(View.VISIBLE);
+            textViewDescription1.setVisibility(View.VISIBLE);
+            textViewTalent2.setVisibility(View.VISIBLE);
+            textViewDescription2.setVisibility(View.VISIBLE);
+            for (int i = 0; i < talents.size(); i++) {
+                if (i == 0) ApiServices.loadPokemonTalent(getContext(), talents.get(i).getLink(), textViewTalent1, textViewDescription1, talents.get(i).getHidden());
+                else ApiServices.loadPokemonTalent(getContext(), talents.get(i).getLink(), textViewTalent2, textViewDescription2, talents.get(i).getHidden());
+            }
         }
         ArrayList<Integer> stats = pokemon.getStat();
         for (int i = 0; i < stats.size(); i++) {
@@ -215,19 +242,33 @@ public class PokemonFragment extends Fragment implements SearchObserver {
             else imageViewTypes2.setImageResource(image);
         }
         cri(pokemon.getCri());
-        if (pokemon.getEvolutions() != null) {
+        if (pokemon.getEvolutions() != null && pokemon.getEvolutions().size() != 1) {
+            if (pokemon.getEvolutions().size() == 2) imageButtonEvo3.setVisibility(View.GONE);
             for (int i = 0; i < pokemon.getEvolutions().size(); i++) {
                 if (i == 0) {
-                    if (Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]) == pokemon.getId()) imageViewEvo1.setBackgroundResource(R.drawable.search_border);
-                    ApiServices.loadPokemonAvatar(getContext(), Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]), false, imageViewEvo1);
+                    imageButtonEvo1.setVisibility(View.VISIBLE);
+                    int idEvo = Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]);
+                    if (idEvo == pokemon.getId()) imageButtonEvo1.setBackgroundResource(R.drawable.search_border);
+                    else imageButtonEvo1.setOnClickListener(v -> onSelectPokemon(new Pokemon(idEvo, "", "", "", "")));
+                    ApiServices.loadPokemonAvatar(getContext(), Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]), false, imageButtonEvo1);
                 } else if (i == 1) {
-                    if (Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]) == pokemon.getId()) imageViewEvo2.setBackgroundResource(R.drawable.search_border);
-                    ApiServices.loadPokemonAvatar(getContext(), Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]), false, imageViewEvo2);
+                    imageButtonEvo2.setVisibility(View.VISIBLE);
+                    int idEvo = Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]);
+                    if (idEvo == pokemon.getId()) imageButtonEvo2.setBackgroundResource(R.drawable.search_border);
+                    else imageButtonEvo2.setOnClickListener(v -> onSelectPokemon(new Pokemon(idEvo, "", "", "", "")));
+                    ApiServices.loadPokemonAvatar(getContext(), Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]), false, imageButtonEvo2);
                 } else {
-                    if (Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]) == pokemon.getId()) imageViewEvo3.setBackgroundResource(R.drawable.search_border);
-                    ApiServices.loadPokemonAvatar(getContext(), Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]), false, imageViewEvo3);
+                    imageButtonEvo3.setVisibility(View.VISIBLE);
+                    int idEvo = Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]);
+                    if (idEvo == pokemon.getId()) imageButtonEvo3.setBackgroundResource(R.drawable.search_border);
+                    else imageButtonEvo3.setOnClickListener(v -> onSelectPokemon(new Pokemon(idEvo, "", "", "", "")));
+                    ApiServices.loadPokemonAvatar(getContext(), Integer.parseInt(pokemon.getEvolutions().get(i).split("/")[6]), false, imageButtonEvo3);
                 }
             }
+        } else {
+            imageButtonEvo1.setVisibility(View.GONE);
+            imageButtonEvo2.setVisibility(View.GONE);
+            imageButtonEvo3.setVisibility(View.GONE);
         }
     }
 }

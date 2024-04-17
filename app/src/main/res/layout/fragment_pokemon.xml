@@ -157,22 +157,34 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/imageViewEvo1"
+                <ImageButton
+                    android:id="@+id/imageButtonEvo1"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:maxWidth="100dp"
+                    android:maxHeight="100dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
                     android:paddingVertical="5dp"
                     android:layout_weight="30"/>
-                <ImageView
-                    android:id="@+id/imageViewEvo2"
+                <ImageButton
+                    android:id="@+id/imageButtonEvo2"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:maxWidth="100dp"
+                    android:maxHeight="100dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
                     android:paddingVertical="5dp"
                     android:layout_weight="30"/>
-                <ImageView
-                    android:id="@+id/imageViewEvo3"
+                <ImageButton
+                    android:id="@+id/imageButtonEvo3"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:maxWidth="100dp"
+                    android:maxHeight="100dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
                     android:paddingVertical="5dp"
                     android:layout_weight="30"/>
             </LinearLayout>

@@ -86,9 +86,11 @@ public class ApiServices {
                 JSONObject chain = jsonObject.getJSONObject("chain");
                 ArrayList<String> res = new ArrayList<>();
                 res.add(chain.getJSONObject("species").getString("url"));
-                JSONObject evolveTo = chain.getJSONArray("evolves_to").getJSONObject(0);
-                res.add(evolveTo.getJSONObject("species").getString("url"));
-                res.add(evolveTo.getJSONArray("evolves_to").getJSONObject(0).getJSONObject("species").getString("url"));
+                if (chain.getJSONArray("evolves_to").length() != 0) {
+                    JSONObject evolveTo = chain.getJSONArray("evolves_to").getJSONObject(0);
+                    res.add(evolveTo.getJSONObject("species").getString("url"));
+                    if (evolveTo.getJSONArray("evolves_to").length() != 0) res.add(evolveTo.getJSONArray("evolves_to").getJSONObject(0).getJSONObject("species").getString("url"));
+                }
                 pokemon.setEvolutions(res);
                 listener.onReceivePokemonData(pokemon);
             } catch (JSONException e) {
