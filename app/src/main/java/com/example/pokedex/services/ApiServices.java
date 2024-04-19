@@ -69,8 +69,10 @@ public class ApiServices {
                 JSONArray names = jsonObject.getJSONArray("names");
                 for (int i = 0; i < names.length(); i++) {
                     String langue = names.getJSONObject(i).getJSONObject("language").getString("name");
-                    if (langue.equals("fr")) pokemon.setNomFR(names.getJSONObject(i).getString("name"));
-                    ApiServices.loadPokemonEvolution(context, pokemon.getLink(), pokemon, listener);
+                    if (langue.equals("fr")) {
+                        pokemon.setNomFR(names.getJSONObject(i).getString("name"));
+                        ApiServices.loadPokemonEvolution(context, pokemon.getLink(), pokemon, listener);
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
